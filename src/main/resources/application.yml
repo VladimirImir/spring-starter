@@ -25,3 +25,6 @@ logging:
   level:
     root: WARN
     com.dev.spring.database.pool: INFO
+  file:
+    name: dev.log
+    path: /
