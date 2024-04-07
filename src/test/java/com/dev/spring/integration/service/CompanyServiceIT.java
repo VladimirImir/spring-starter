@@ -1,26 +1,20 @@
 package com.dev.spring.integration.service;
 
-import com.dev.spring.ApplicationRunner;
-import com.dev.spring.database.entity.Company;
+import com.dev.spring.config.DatabaseProperties;
 import com.dev.spring.dto.CompanyReadDto;
-import com.dev.spring.listener.entity.EntityEvent;
+import com.dev.spring.integration.annotation.IT;
 import com.dev.spring.service.CompanyService;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.ConfigDataApplicationContextInitializer;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-import java.util.Optional;
+import org.springframework.test.context.TestConstructor;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
 
-@SpringBootTest
+
+@IT
+@RequiredArgsConstructor
 //@ExtendWith(SpringExtension.class)
 //@ContextConfiguration(classes = ApplicationRunner.class,
 //        initializers = ConfigDataApplicationContextInitializer.class)
@@ -28,8 +22,8 @@ public class CompanyServiceIT {
 
     private static final Integer COMPANY_ID = 1;
 
-    @Autowired
-    private CompanyService companyService;
+    private final CompanyService companyService;
+    private final DatabaseProperties databaseProperties;
 
     @Test
     void findById() {
