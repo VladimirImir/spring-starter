@@ -9,7 +9,7 @@ import org.springframework.test.annotation.DirtiesContext;
 
 @IT
 @RequiredArgsConstructor
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+//@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class UserServiceIT {
 
     private final UserService userService;
@@ -19,7 +19,7 @@ public class UserServiceIT {
     void test() {
         System.out.println();
     }
-    
+
     @Test
     void test2() {
         System.out.println();
