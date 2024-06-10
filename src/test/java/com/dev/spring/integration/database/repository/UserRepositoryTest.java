@@ -3,6 +3,7 @@ package com.dev.spring.integration.database.repository;
 import com.dev.spring.database.entity.Role;
 import com.dev.spring.database.entity.User;
 import com.dev.spring.database.repository.UserRepository;
+import com.dev.spring.dto.PersonalInfo;
 import com.dev.spring.integration.annotation.IT;
 import lombok.RequiredArgsConstructor;
 import org.assertj.core.api.Assertions;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,6 +23,12 @@ import static org.junit.jupiter.api.Assertions.*;
 class UserRepositoryTest {
 
     private final UserRepository userRepository;
+
+    @Test
+    void checkProjections() {
+        var users = userRepository.findAllByCompanyId(1);
+        assertThat(users).hasSize(2);
+    }
 
     @Test
     void checkPageable() {
