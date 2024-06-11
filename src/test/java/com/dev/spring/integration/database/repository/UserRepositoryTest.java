@@ -4,6 +4,7 @@ import com.dev.spring.database.entity.Role;
 import com.dev.spring.database.entity.User;
 import com.dev.spring.database.repository.UserRepository;
 import com.dev.spring.dto.PersonalInfo;
+import com.dev.spring.dto.UserFilter;
 import com.dev.spring.integration.annotation.IT;
 import lombok.RequiredArgsConstructor;
 import org.assertj.core.api.Assertions;
@@ -23,6 +24,15 @@ import static org.junit.jupiter.api.Assertions.*;
 class UserRepositoryTest {
 
     private final UserRepository userRepository;
+
+    @Test
+    void checkCustomImplementation() {
+        UserFilter filter = new UserFilter(
+                null, "%ov%", LocalDate.now()
+        );
+        var users = userRepository.findAllByFilter(filter);
+        System.out.println();
+    }
 
     @Test
     void checkProjections() {
