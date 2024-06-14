@@ -1,16 +1,15 @@
 package com.dev.spring.database.repository;
 
 import com.dev.spring.database.entity.User;
+import com.dev.spring.database.querydsl.QPredicates;
 import com.dev.spring.dto.UserFilter;
+import com.querydsl.jpa.impl.JPAQuery;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.EntityManager;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import java.util.ArrayList;
 import java.util.List;
+
+import static com.dev.spring.database.entity.QUser.user;
 
 @RequiredArgsConstructor
 public class FilterUserRepositoryImpl implements FilterUserRepository {
@@ -19,23 +18,16 @@ public class FilterUserRepositoryImpl implements FilterUserRepository {
 
     @Override
     public List<User> findAllByFilter(UserFilter filter) {
-        var cb = entityManager.getCriteriaBuilder();
-        var criteria = cb.createQuery(User.class);
+        var predicate = QPredicates.builder()
+                .add(filter.firstname(), user.firstname::containsIgnoreCase)
+                .add(filter.lastname(), user.lastname::containsIgnoreCase)
+                .add(filter.birthDate(), user.birthDate::before)
+                .build();
 
-        var user = criteria.from(User.class);
-        criteria.select(user);
-        List<Predicate> predicates = new ArrayList<>();
-        if (filter.firstname() != null) {
-            predicates.add(cb.like(user.get("firstname"), filter.firstname()));
-        }
-        if (filter.lastname() != null) {
-            predicates.add(cb.like(user.get("lastname"), filter.lastname()));
-        }
-        if (filter.birthDate() != null) {
-            predicates.add(cb.lessThan(user.get("birthDate"), filter.birthDate()));
-        }
-        criteria.where(predicates.toArray(Predicate[]::new));
-
-        return entityManager.createQuery(criteria).getResultList();
+        return new JPAQuery<User>(entityManager)
+                .select(user)
+                .from(user)
+                .where(predicate)
+                .fetch();
     }
 }

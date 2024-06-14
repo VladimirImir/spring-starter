@@ -38,10 +38,10 @@ class UserRepositoryTest {
     @Test
     void checkCustomImplementation() {
         UserFilter filter = new UserFilter(
-                null, "%ov%", LocalDate.now()
+                null, "ov", LocalDate.now()
         );
         var users = userRepository.findAllByFilter(filter);
-        System.out.println();
+        assertThat(users).hasSize(4);
     }
 
     @Test
