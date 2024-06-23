@@ -1,6 +1,8 @@
 package com.dev.spring.http.controller;
 
+import com.dev.spring.database.entity.Role;
 import com.dev.spring.dto.UserCreateEditDto;
+import com.dev.spring.service.CompanyService;
 import com.dev.spring.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.web.servlet.ServletWebServerFactoryAutoConfiguration;
@@ -16,7 +18,7 @@ import org.springframework.web.server.ResponseStatusException;
 public class UserController {
 
     private final UserService userService;
-    private final ServletWebServerFactoryAutoConfiguration servletWebServerFactoryAutoConfiguration;
+    private final CompanyService companyService;
 
     @GetMapping
     public String findAll(Model model) {
@@ -30,6 +32,8 @@ public class UserController {
         return userService.findById(id)
                 .map(user -> {
                     model.addAttribute("user", user);
+                    model.addAttribute("roles", Role.values());
+                    model.addAttribute("companies", companyService.findAll());
                     return "user/user";
                 })
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
