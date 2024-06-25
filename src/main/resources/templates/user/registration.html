@@ -28,11 +28,15 @@
                 <option th:each="company : ${companies}"
                         th:value="${company.id()}"
                         th:selected="${company.id() == user.companyId}"
-                        th:text="${company.name()}">Company</option>
+                        th:text="${company.name()}">Company
+                </option>
             </select>
         </label>
     </div>
     <button type="submit">Register</button>
 </form>
+<div th:if="${errors}">
+    <p style="color: red" th:each="error : ${errors}" th:text="${error.defaultMessage}">Error message</p>
+</div>
 </body>
 </html>
